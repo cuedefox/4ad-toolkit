@@ -1,0 +1,21 @@
+nav {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color1;
+    @include size(100%, 10vh);
+    h2 {
+        margin-left: 2em;
+        color: $color5;
+    }
+    ul {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 2em;
+        margin-right: 2em;
+        a {
+            color: $color5;
+        }
+    }
+}

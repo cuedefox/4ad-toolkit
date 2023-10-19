@@ -1,0 +1,54 @@
+.home-container {
+    display: flex;
+    flex-flow: column nowrap;
+    background-image: url('../assets/img/backgrounds/home-back.jpg');
+    background-repeat: repeat;
+    background-size: 20em;
+    background-attachment: fixed;
+    color: $color5;
+    align-items: center;
+    justify-content: center;
+    a {
+        color: $color3;
+    }
+    header {
+        padding: 0em 2em;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        h1 {
+            font-size: 4em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin: 1em;
+        }
+    }
+    section {
+        h2 {
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        p {
+            font-size: 1.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    }
+    .img-sect {
+        padding: 1em 3em;
+        display: flex;
+        flex-flow: row nowrap;
+        img {
+            @include size(15em, 15em)
+        }
+    }
+    .no-img-sect {
+        h2 {
+            padding-bottom: 1em;
+        }
+        padding: 1em 5em;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+}

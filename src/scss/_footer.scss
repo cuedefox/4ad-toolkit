@@ -1,0 +1,14 @@
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include size(100%, 10vh);
+    background-color: $color1;
+    p {
+        color: $color5;
+        a {
+            color: $color5;
+            cursor: pointer;
+        }
+    }
+}

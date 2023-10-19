@@ -1,0 +1,45 @@
+.party-item {
+    padding: 1em;
+    border: 1px solid black;
+    background-image: url('../assets/img/backgrounds/party-item-back.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    p {
+        color: $color5;
+        font-weight: bold;
+    }
+    .party-item-header {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        margin-bottom: 1em;
+        img {
+            @include size(10em, 10em);
+            border: 3px solid $color1;
+            cursor: pointer;
+        }
+        div {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: space-between;
+        }
+    }
+    .party-item-body {
+        display: flex;
+        flex-flow: column nowrap;
+        input {
+            @include size(100%, 2em);
+        }
+        textarea {
+            @include size(100%, 3em);
+        }
+    }
+}
+
+.small-num-input {
+    @include size(2.5em, 2em);
+}
+
+.gold-input {
+    @include size(4em, 2em);
+}
