@@ -17,7 +17,7 @@ const HomeContainer = () => {
                 <img src={headerImg} alt="role playing game" />
             </section>
         </header>
-        <body>
+        <main>
             <section className="no-img-sect">
                 <h2>Requisito Esencial: El Juego Base</h2>
                 <p>
@@ -36,7 +36,7 @@ const HomeContainer = () => {
                     </p>
                 </div>
             </section>
-        </body>
+        </main>
     </div>
 }
 

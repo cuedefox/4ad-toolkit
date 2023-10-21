@@ -4,6 +4,7 @@ import Root from "./Root";
 import PartyContainer from "../containers/PartyContainer";
 import HomeContainer from "../containers/HomeContainer";
 import TablesContainer from "../containers/TablesContainer";
+import TableContainer from "../containers/TableContainer";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
             {
                 path: "/tables",
                 element: <TablesContainer />
+            },
+            {
+                path: "/table/:id",
+                element: <TableContainer />
             }
         ],
     },

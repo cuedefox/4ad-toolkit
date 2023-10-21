@@ -1,0 +1,15 @@
+.tables-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    background-color: $color4;
+    h1 {
+        margin: 1em 0em;
+        color: $color5;
+        font-size: 2em;
+    }
+    div {
+        margin: 1em 0em;
+    }
+}
