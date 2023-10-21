@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import tables from "../db/tables.json";
-import { d6 } from "../utils/diceRolls";
+import { dice } from "../utils/diceRolls";
 
 const TableContainer = () => {
-    const [roomImg, setRoomImg] = useState(d6());
+    const [roomImg, setRoomImg] = useState(dice(6));
 
     const {id} = useParams();
     let table = tables.find(table => table.id === parseInt(id));
@@ -15,7 +15,7 @@ const TableContainer = () => {
     useEffect(() => {}, [roomImg, roomType])
 
     function newRoom() {
-        setRoomImg(`${d6()}${d6()}`);
+        setRoomImg(`${dice(6)}${dice(6)}`);
         console.log(roomImg, roomType);
     }
     
@@ -23,11 +23,14 @@ const TableContainer = () => {
         <h1>Tabla de {table.name}</h1>
         <div className="table-data">
             <div className="table-room-img">
-                <h3>Habitacion: {roomType}</h3>
+                <h3>Tipo: {roomType}</h3>
                 <img src={cargarImagen(`./${table.tableRooms}/rooms/${roomImg}.png`)} alt={`room ${roomImg}`} />
             </div>
             <div className="table-room-content">
+                <img src="" alt="" />
+                <div className="table-room-content-log">
 
+                </div>
             </div>
         </div>
         <div className="table-buts">

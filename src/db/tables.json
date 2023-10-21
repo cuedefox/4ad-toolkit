@@ -1,3 +1,4 @@
 [
-    {"id": 1, "name": "Core Book", "img": "core-book.webp", "tableRooms": 1}
+    {"id": 1, "name": "Core Book", "img": "core-book.webp", "tableRooms": 1},
+    {"id": 2, "name": "Fiendish Foes", "img": "fiendish-foes.webp", "tableRooms": 1}
 ]

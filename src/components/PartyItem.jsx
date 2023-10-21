@@ -1,4 +1,9 @@
 import React, { useContext } from "react";
+import heartIcon from "../assets/img/sheetsIcons/heart.svg";
+import shieldIcon from "../assets/img/sheetsIcons/shield.svg";
+import swordIcon from "../assets/img/sheetsIcons/sword.svg";
+import lupeIcon from "../assets/img/sheetsIcons/lupe.svg";
+import goldIcon from "../assets/img/sheetsIcons/gold.svg";
 import { PartyItemContext } from "../contexts/Party.jsx";
 
 const PartyItem = ({ index }) => {
@@ -36,8 +41,8 @@ const PartyItem = ({ index }) => {
     return (
         <div className="party-item">
             <div className="party-item-header">
-                <img src={img} alt={name} onClick={changeImage} />
-                <div>
+                <img className="char-img" src={img} alt={name} onClick={changeImage} />
+                <div className="party-item-header-section">
                     <input
                         type="text"
                         value={name}
@@ -68,38 +73,53 @@ const PartyItem = ({ index }) => {
                         onChange={(e) => updatePartyData({ ...partyData[index], hasLantern: e.target.checked })}
                     /></p>
                 </div>
-                <div>
-                    <p>Vida: <input
+                <div className="party-item-header-section">
+                    <div>
+                        <img src={heartIcon} alt="heart" />
+                        <input
                         className="small-num-input"
                         type="number"
                         value={life}
                         onChange={(e) => updatePartyData({ ...partyData[index], life: e.target.value })}
-                    /></p>
-                    <p>Ataque: <input
+                        />
+                    </div>
+                    <div>
+                        <img src={swordIcon} alt="sword" />
+                        <input
                         className="small-num-input"
                         type="number"
                         value={attack}
                         onChange={(e) => updatePartyData({ ...partyData[index], attack: e.target.value })}
-                    /></p>
-                    <p>Defensa: <input
+                        />
+                    </div>
+                    <div>
+                        <img src={shieldIcon} alt="shield" />
+                        <input
                         className="small-num-input"
                         type="number"
                         value={defense}
                         onChange={(e) => updatePartyData({ ...partyData[index], defense: e.target.value })}
-                    /></p>
-                    <p>Pistas: <input
+                        />
+                    </div>
+                    <div>
+                        <img src={lupeIcon} alt="Clue" />
+                        <input
                         className="small-num-input"
                         type="number"
                         max="3"
                         value={clues}
                         onChange={(e) => updatePartyData({ ...partyData[index], clues: e.target.value })}
-                    /></p>
-                    <p>Oro: <input
+                        />
+                    </div>
+                    <div>
+                        <img src={goldIcon} alt="gold" />
+                        <input
                         className="gold-input"
                         type="number"
                         value={gold}
                         onChange={(e) => updatePartyData({ ...partyData[index], gold: e.target.value })}
-                    /></p>
+                        />
+                    </div>
                 </div>
             </div>
             <div className="party-item-body">
