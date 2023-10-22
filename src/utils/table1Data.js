@@ -1,21 +1,61 @@
 import { dice } from "./diceRolls";
 
-export const roomContentTable1 = (roomType) => {
+export const roomContentTable1 = (roomType, vars) => {
     const roomContentRoll = dice(6) + dice(6);
+    let log;
+    let newVars;
     switch(roomContentRoll) {
         case 2: 
-            return {log: `Tesoro encontrado: ${treasureTable1()}`, canSearch: false}
+            return {log: `Tesoro encontrado: ${treasureTable1(0)}`, canSearch: false};
         case 3:
-            return {log: `Tesoro protegido por una trampa, trampa: ${trapsTable1()}, tesoro: ${treasureTable1()}`, canSearch: false}
+            return {log: `Tesoro protegido por una trampa, trampa: ${trapsTable1()}, tesoro: ${treasureTable1(0)}`, canSearch: false};
         case 4:
-            let log;
             if(roomType === 'corridor') {
-                log = 'Habitacion vacia, puedes buscar'
+                log = 'Habitacion vacia, puedes buscar';
             } else {
-                log = `Evento especial: ${specialEventsTable1()}`
+                const result = specialEventsTable1(vars?.healerEncountered, vars?.alchemistEncountered);
+                log = `Evento especial: ${result.log}`;
+                newVars = result.vars;
             }
-            return {log: log, canSearch: roomType === 'corridor'}
+            return {log: log, canSearch: roomType === 'corridor', vars: newVars};
+        case 5:
+            return {log: `Habitacion vacia pero con caracteristica especial: ${specialFeatureTable1()}, puedes buscar`, canSearch: true};
+        case 6:
+            return {log: `¡Alimañas!: ${verminTable1()}`, canSearch: false};
+        case 7:
+            return {log: `¡Esbirros!: ${minionTable1()}`, canSearch: false};
+        case 8:
+            if(roomType === 'corridor') {
+                log = 'Habitacion vacia, puedes buscar';
+            } else {
+                log = `¡Esbirros!: ${minionTable1()}`;
+            }
+            return {log: log, canSearch: roomType === 'corridor', vars: newVars};
+        case 9:
+            return {log: 'Habitacion vacia, puedes buscar', canSearch: true};
+        case 10:
+            if(roomType === 'corridor') {
+                log = 'Habitacion vacia, puedes buscar';
+            } else {
+                log = `¡Mounstro Extraño!: ${weirdMonsterTable1()}`;
+            }
+            return {log: log, canSearch: roomType === 'corridor', vars: {bossesDefeated: 1}};
+        case 11:
+            if(roomType === 'corridor') {
+                log = 'Jefe';
+            } else {
+                log = `¡Esbirros!: ${minionTable1()}`;
+            }
+            return {log: log, canSearch: roomType === 'corridor', vars: newVars};
+        case 12:
+            if(roomType === 'corridor') {
+                log = 'Habitacion vacia, puedes buscar';
+            } else {
+                log = `¡Esbirros!: ${minionTable1()}`;
+            }
+            return {log: log, canSearch: roomType === 'corridor', vars: newVars};
         default:
+            break
     }
 }
 
@@ -125,11 +165,124 @@ const trapsTable1 = () => {
     }
 }
 
-const specialEventsTable1 = () => {
-    const roll = dice(6);
+const specialEventsTable1 = (healerEncountered, alchemistEncountered) => {
+    let roll = dice(6);
+    if(healerEncountered) {
+        while(roll === 5) {
+            roll = dice(6);
+        }
+    }
+    if(alchemistEncountered && roll === 6) {
+        roll = 4;
+    }
+    let vars = {};
     switch(roll) {
         case 1: 
             return `Un fantasma pasa a travez de los personajes, todos deben realizar una tirada contra nivel 4 de miedo o perder una vida (los clerigos agregan su nivel a la tirada)`
+        case 2:
+            return `Mounstros errantes atacan al grupo: `
+        case 3:
+            return `Una dama vestida de blanco les pide que completen la mision: {}, si la rechazan, la dama desaparecera y debes ignorar cualquier otra aparicion en esta partida`
+        case 4:
+            return `Hay una trampa en la habitacion: ${trapsTable1}`
+        case 5:
+            vars.healerEncountered = true;
+            return {log: `Encuentran a un curandero errante puede curar un punto de vida a cambio de 10 de oro, no hay limite de curacion pero puede ser encontrado solo una vez.`, vars: vars}
+        case 6:
+            vars.alchemistEncountered = true;
+            return {log: `
+            Encuentran a un alquimista errante. Él te venderá hasta una poción de
+            curación por miembro del grupo (50 piezas de oro cada una) o una dosis única de
+            veneno de hoja (30 piezas de oro).  El veneno de hoja te permite envenenar a un
+            una sola flecha o arma cortante (no un arma aplastante). esa arma
+            Tendrás un +1 en Ataque contra el primer enemigo con el que luches. El veneno no
+            funciona con monstruos no muertos, demonios, blobs, autómatas o estatuas vivas.
+            Solo puede ser encontrado una vez`, vars: vars}
+        default:
+    }
+}
+
+const specialFeatureTable1 = () => {
+    const roll = dice(6);
+    switch(roll) {
+        case 1: 
+            return `Bendecir`
+        case 2:
+            return `Bola de fuego`
+        case 3:
+            return `Rayo`
+        case 4:
+            return `Dormir`
+        case 5:
+            return `Escapar`
+        case 6:
+            return `Protejer`
+        default:
+    }
+}
+
+const verminTable1 = () => {
+    const roll = dice(6);
+    switch(roll) {
+        case 1: 
+            return `Bendecir`
+        case 2:
+            return `Bola de fuego`
+        case 3:
+            return `Rayo`
+        case 4:
+            return `Dormir`
+        case 5:
+            return `Escapar`
+        case 6:
+            return `Protejer`
+        default:
+    }
+}
+
+const minionTable1 = () => {
+    const roll = dice(6);
+    switch(roll) {
+        case 1: 
+            return `Bendecir`
+        case 2:
+            return `Bola de fuego`
+        case 3:
+            return `Rayo`
+        case 4:
+            return `Dormir`
+        case 5:
+            return `Escapar`
+        case 6:
+            return `Protejer`
+        default:
+    }
+}
+
+const weirdMonsterTable1 = () => {
+    const roll = dice(6);
+    switch(roll) {
+        case 1: 
+            return `Bendecir`
+        case 2:
+            return `Bola de fuego`
+        case 3:
+            return `Rayo`
+        case 4:
+            return `Dormir`
+        case 5:
+            return `Escapar`
+        case 6:
+            return `Protejer`
+        default:
+    }
+}
+
+const bossTable1 = () => {
+    const roll = dice(6);
+    switch(roll) {
+        case 1: 
+            return `Bendecir`
         case 2:
             return `Bola de fuego`
         case 3:
