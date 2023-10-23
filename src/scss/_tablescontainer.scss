@@ -3,14 +3,15 @@
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
-    background-color: $color4;
+    background-image: url('../assets/img/backgrounds/tables.webp');
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 2em 0em;
     h1 {
-        margin: 1em 0em;
+        -webkit-text-stroke: 1px $color1;
+        margin-bottom: 1em; /* Ajusta el ancho y el color del borde según tus preferencias */
         color: $color5;
-        font-size: 2em;
-    }
-    div {
-        margin: 1em 0em;
+        font-size: 3em;
     }
     .tables {
         display: flex;

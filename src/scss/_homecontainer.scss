@@ -8,6 +8,7 @@
     color: $color5;
     align-items: center;
     justify-content: center;
+    padding: 2em 0;
     a {
         color: $color3;
     }
@@ -20,7 +21,7 @@
         h1 {
             font-size: 4em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            margin: 1em;
+            margin-bottom: 1em;
         }
     }
     section {

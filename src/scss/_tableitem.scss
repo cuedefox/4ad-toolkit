@@ -1,9 +1,11 @@
 .table-item {
-    background-color: $color1;
+    background-color: $color2;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
+    border-radius: 1em;
+    overflow: hidden;
     img {
         @include size(12em, 18em);
     }
@@ -12,5 +14,11 @@
         padding: 1em;
         font-size: 1em;
         font-weight: bold;
+    }
+    &:hover {
+        img {
+            transition: ease-in .3s;
+            opacity: 80%;
+        }
     }
 }
