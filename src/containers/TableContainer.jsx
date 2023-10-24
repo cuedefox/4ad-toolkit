@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import tables from "../db/tables.json";
 import { dice } from "../utils/diceRolls";
-import { roomContentTable1, table1Corridors } from "../utils/table1Data";
+import { roomContentTable1, table1Corridors, searchTable1 } from "../utils/table1Data";
 import LogItem from "../components/LogItem";
 
 const TableContainer = () => {
@@ -42,10 +42,15 @@ const TableContainer = () => {
         setCanTouchStatue(roomContent.canTouchStatue || false);
         setCanWaitReaction(roomContent.canWaitReaction || false);
         setReactionLog(roomContent.reaction || '');
+        if(roomContent?.surprise) {
+            const surpriseLog = `el enemigo te sorprende y actua antes que tu: ${reactionLog}`;
+            setLogs([logs, surpriseLog]);
+        }
     }
 
     function search() {
         setCanSearch(false);
+        const search = searchTable1();
     }
 
     function touchStatue() {

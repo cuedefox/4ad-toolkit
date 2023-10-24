@@ -1,4 +1,4 @@
-import { dice } from "./diceRolls";
+import { dice, xInXChance } from "./diceRolls";
 
 export const table1Corridors = ['11', '12', '13', '14', '26', '32', '33', '42', '45', '51', '53', '55', '62', '63', '65'];
 
@@ -11,7 +11,7 @@ export const roomContentTable1 = (roomType, vars) => {
     switch(roomContentRoll) {
         case 2: 
             result = treasureTable1(0);
-            return {log: result.log, canSearch: false, img: result.img};
+            return {log: `Hay un tesoro en la habitacion ${result.log}`, canSearch: false, img: result.img};
         case 3:
             result = treasureTable1(0);
             return {log: `Tesoro protegido por una trampa, trampa: ${trapsTable1()}, tesoro: ${result.log}.`, canSearch: false, img: result.img};
@@ -39,7 +39,7 @@ export const roomContentTable1 = (roomType, vars) => {
                 result = minionTable1();
                 log = `¡Esbirros!: ${result.log}.`;
             }
-            return {log: log, canSearch: roomType === 'corridor', vars: newVars, img: result.img, reaction: result.reaction};
+            return {log: log, canSearch: roomType === 'corridor', vars: newVars, img: result.img, reaction: result.reaction, surprise: result.surprise || false};
         case 9:
             return {log: 'Habitacion vacia, puedes buscar.', canSearch: true};
         case 10:
@@ -74,7 +74,7 @@ export const roomContentTable1 = (roomType, vars) => {
     }
 }
 
-const treasureTable1 = (modifier) => {
+const treasureTable1 = (modifier = 0) => {
     const roll = dice(6) + modifier;
     switch(roll) {
         case roll <= 0:
@@ -199,7 +199,7 @@ const specialEventsTable1 = (healerEncountered = false, alchemistEncountered = f
             result = wanderingMonstersTable1();
             return {log: `Mounstros errantes atacan al grupo: ${result.log}`, img: result.img};
         case 3:
-            return {log: `Una dama vestida de blanco les pide que completen la mision: {}, si la rechazan, la dama desaparecera y debes ignorar cualquier otra aparicion en esta partida`};
+            return {log: `Una dama vestida de blanco les pide que completen la mision: ${questTable1()}, si la rechazan, la dama desaparecera y debes ignorar cualquier otra aparicion en esta partida`};
         case 4:
             return {log: `Hay una trampa en la habitacion: ${trapsTable1()}`};
         case 5:
@@ -363,21 +363,116 @@ const verminTable1 = (isWandering = false) => {
 const minionTable1 = (isWandering = false) => {
     const roll = dice(6);
     const reactRoll = dice(6);
-    const canWaitReaction = isWandering ? false : true;
+    let canWaitReaction = isWandering ? false : true;
     let reaction;
     switch(roll) {
         case 1: 
-            return {log: ``, img: ''};
+            const type = dice(2);
+            reaction = 'Pelear a muerte';
+            switch(type) {
+                case 1:
+                    return {log: `${dice(6) + 2} esqueletos, no-muertos (nivel 3).
+                    Ningún tesoro. Las armas aplastantes atacan +1. Las flechas están en -1. Los esqueletos nunca prueban
+                    moral`, img: '', canWaitReaction, reaction};
+                case 2:
+                    return {log: `${dice(6) + 2} zombies, no-muertos (nivel 3).
+                    Ningún tesoro. Las flechas están en -1. Los zombies nunca prueban
+                    moral`, img: '', canWaitReaction, reaction};
+                default:
+            }
+            break
         case 2:
-            return {log: ``, img: ''};
+            const goblins = dice(6) + 3;
+            let surprise = xInXChance(1, 6);
+            if(surprise) {
+                canWaitReaction = false;
+            }
+            if(isWandering) {
+                surprise = false;
+            }
+            switch(reactRoll) {
+                case 1:
+                    reaction = 'Escapan si son superados en numero';
+                    break
+                case reactRoll <= 3:
+                    reaction = `Los goblin piden ${5 * goblins} piezas de oro como soborno a cambio de dejarlos tranquilos`;
+                    break
+                case reactRoll >= 4:
+                    reaction = `Pelear`;
+                    break
+                default:
+            }
+            return {log: `${goblins} goblins (nivel 3), moral - 1. Los enanos atacan + 1. Tesoro si se los derrota: ${treasureTable1(-1).log}`, img: '', canWaitReaction, reaction, surprise};
         case 3:
-            return {log: ``, img: ''};
+            const hobgoblins = dice(6);
+            switch(reactRoll) {
+                case 1:
+                    reaction = 'Escapan si son superados en numero';
+                    break
+                case reactRoll <= 3:
+                    reaction = `Los hobgoblin piden ${10 * hobgoblins} piezas de oro como soborno a cambio de dejarlos tranquilos`;
+                    break
+                case reactRoll >= 4:
+                    reaction = `Pelear`;
+                    break
+                case 6:
+                    reaction = `Pelear a muerte`;
+                    break
+                default:
+            }
+            return {log: `${hobgoblins} hobgoblins (nivel 4). Tesoro si se los derrota: ${treasureTable1(1).log}`, img: '', canWaitReaction, reaction};
         case 4:
-            return {log: ``, img: ''};
+            const orcs = dice(6) + 1;
+            switch(reactRoll) {
+                case reactRoll <= 2:
+                    reaction = `Los orcos piden ${10 * orcs} piezas de oro como soborno a cambio de dejarlos tranquilos`;
+                    break
+                case reactRoll >= 3:
+                    reaction = `Pelear`;
+                    break
+                case 6:
+                    reaction = `Pelear a muerte`;
+                    break
+                default:
+            }            
+            return {log: `${orcs} orcos (nivel 4). Los orcos tienen miedo a la magia y deben
+            prueba la moral cada vez que uno o más mueren por un hechizo. Si un hechizo causó
+            su número cae por debajo del 50%, probarán la moral en -1. Ellos nunca
+            tienen objetos mágicos en su tesoro: trate cualquier magia obtenida como ${dice(6) * dice(6)}
+            piezas de oro en su lugar. Los elfos atacan y lanzan hechizos contra los orcos a +1`, img: '', canWaitReaction, reaction};
         case 5:
-            return {log: ``, img: ''};
+            switch(reactRoll) {
+                case reactRoll <= 2:
+                    reaction = `Pelear, si hay un enano en el equipo, pelean a muerte`;
+                    break
+                case reactRoll >= 3:
+                    reaction = `Pelear a muerte`;
+                    break
+                default:
+            }       
+            return {log: `${dice(3)} trolls (nivel 4). Los trolls se regeneran, a menos que los mate un
+            hechizo, o a menos que un personaje use un ataque para cortar a un ya asesinado
+            troll en pedazos. Si esto no sucede, tira un dado por cada troll asesinado en su
+            Siguiente turno. Con un 5 o 6, el troll volverá a la vida y continuará
+            luchar. Los medianos añaden +nivel a su tirada de Defensa contra trolls. Tesoro si se los derrota: ${treasureTable1(0).log}`, img: '', canWaitReaction, reaction};
         case 6:
-            return {log: ``, img: ''};
+            const fungiFolk = dice(6) + dice(6);
+            let bribe = 0;
+            for(let i = 0; i < fungiFolk; i++) {
+                bribe += dice(6);
+            }
+            switch(reactRoll) {
+                case reactRoll <= 2:
+                    reaction = `Los hombres hongo piden ${bribe} piezas de oro como soborno a cambio de dejarlos tranquilos`;
+                    break
+                case reactRoll >= 3:
+                    reaction = `Pelear`;
+                    break
+                default:
+            }   
+            return {log: `${fungiFolk} hombres hongo (Nivel 3). cualquier personaje recibiendo
+            daño causado por los hongos, debe salvar contra el veneno de nivel 3 o perder 1
+            vida. Los medianos añaden su nivel en tirada contra veneno. Tesoro si se los derrota: ${treasureTable1(0).log}`, img: '', canWaitReaction, reaction};
         default:
     }
 }
@@ -389,17 +484,17 @@ const weirdMonsterTable1 = (isWandering = false) => {
     let reaction;
     switch(roll) {
         case 1: 
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 2:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 3:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 4:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 5:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 6:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         default:
     }
 }
@@ -411,17 +506,17 @@ const bossTable1 = (isWandering = false, isFinal) => {
     let reaction;
     switch(roll) {
         case 1: 
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 2:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 3:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 4:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 5:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         case 6:
-            return {log: ``, img: ''};
+            return {log: ``, img: '', canWaitReaction, reaction};
         default:
     }
 }
@@ -434,6 +529,25 @@ export const searchTable1 = () => {
         case roll <= 4:
             return {log: ``, img: ''};
         case roll >= 5:
+        default:
+    }
+}
+
+const questTable1 = () => {
+    const roll = dice(6);
+    switch(roll) {
+        case 1: 
+            return {log: ``, img: ''};
+        case 2:
+            return {log: ``, img: ''};
+        case 3:
+            return {log: ``, img: ''};
+        case 4:
+            return {log: ``, img: ''};
+        case 5:
+            return {log: ``, img: ''};
+        case 6:
+            return {log: ``, img: ''};
         default:
     }
 }
