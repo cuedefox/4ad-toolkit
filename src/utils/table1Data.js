@@ -86,11 +86,11 @@ const treasureTable1 = (modifier = 0) => {
         case 3:
             return {log: `un pergamino con el hechizo ${randomSpellTable1()}`, img: 'treasure/scroll.jpg'};
         case 4:
-            return {log: `una gema con valor de ${(dice(6) + dice(6)) * 5} piezas de oro`, img: ''};
+            return {log: `una gema con valor de ${(dice(6) + dice(6)) * 5} piezas de oro`, img: 'treasure/gem.jpg'};
         case 5:
-            return {log: `una pieza de joyeria con valor de ${(dice(6) + dice(6) + dice(6)) * 10} piezas de oro`, img: ''};
+            return {log: `una pieza de joyeria con valor de ${(dice(6) + dice(6) + dice(6)) * 10} piezas de oro`, img: 'treasure/jewelery.jpg'};
         case roll >= 6:
-            return {log: `item magico: ${magicTreasureTable1()}`, img: ''};
+            return {log: `item magico: ${magicTreasureTable1()}`, img: 'treasure/magic-item.jpg'};
         default:
     }
 }
@@ -223,26 +223,25 @@ const specialFeatureTable1 = () => {
     const roll = dice(6);
     switch(roll) {
         case 1: 
-            return {log: `¡Fuente!, todos los personajes heridos recuperan 1 punto de vida, solo la primer fuente que encuentres causara efecto, ignora las proximas fuentes`, img: ''};
+            return {log: `¡Fuente!, todos los personajes heridos recuperan 1 punto de vida, solo la primer fuente que encuentres causara efecto, ignora las proximas fuentes`, img: 'sp-feature/fountain.jpg'};
         case 2:
-            return {log: `¡Templo bendito!, un personaje de tu eleccion gana +1 en ataque contra enemigos no muertos y demonios, una vez el personaje mata un no muerto o demonio el bonus desaparece`, img: ''};
+            return {log: `¡Templo bendito!, un personaje de tu eleccion gana +1 en ataque contra enemigos no muertos y demonios, una vez el personaje mata un no muerto o demonio el bonus desaparece`, img: 'sp-feature/blessed-temple.avif'};
         case 3:
-            return {log: `¡Armeria!, todos los personajes pueden cambiar su armamento si asi lo quieren, respetando las limitaciones de su clase`, img: ''};
+            return {log: `¡Armeria!, todos los personajes pueden cambiar su armamento si asi lo quieren, respetando las limitaciones de su clase`, img: 'sp-feature/armory.jpg'};
         case 4:
-            const marchOrder = dice(4);
             return {log: `Al entrar en la habitación, un brillo espeluznante emana de un
-            altar siniestro. El personaje con orden de marcha ${marchOrder} está maldito y ahora tiene -1 en su
+            altar siniestro. El personaje con orden de marcha ${dice(4)} está maldito y ahora tiene -1 en su
             Tiradas de defensa. Para romper la maldición, el personaje debe matar a un jefe
             monstruo solo, o entrar en un Templo Bendito (ver 2, arriba), o tener un
-            Hechizo de bendición lanzado sobre sí mismo por un clérigo`, img: ''};
+            Hechizo de bendición lanzado sobre sí mismo por un clérigo`, img: 'sp-feature/altar.jpg'};
         case 5:
-            return {log: `Ven una estatua en la habitacion, pueden dejarla sola o tocarla. (ve los botones debajo)`, img: '', canTouchStatue: true};
+            return {log: `Ven una estatua en la habitacion, pueden dejarla sola o tocarla. (ve los botones debajo)`, img: 'sp-feature/statue.jpg', canTouchStatue: true};
         case 6:
             const puzzleLevel = dice(6);
             return {log: `la habitación contiene una caja de rompecabezas. Su nivel es ${puzzleLevel}. Puedes
             Déjalo en paz o intenta resolverlo. Por cada intento fallido, el personaje
             intentar resolverlo pierde 1 vida. Magos y pícaros añaden su nivel a su
-            tirada de resolución de acertijos. Si se resuelve el rompecabezas, se abre la caja y contiene dentro: ${treasureTable1().log}`, img: ''};
+            tirada de resolución de acertijos. Si se resuelve el rompecabezas, se abre la caja y contiene dentro: ${treasureTable1().log}`, img: 'sp-feature/puzzle.webp'};
         default:
     }
 }
@@ -279,7 +278,7 @@ const verminTable1 = (isWandering = false) => {
                     break
                 default:
             }
-            return {log: `${dice(6) + dice(6) + dice(6)} ratas (nivel 1), sin tesoro. cada personaje herido por una rata tiene una probabilidad de 1 en 6 de sufrir una herida adicional por infeccion`, img: '', canWaitReaction, reaction};
+            return {log: `${dice(6) + dice(6) + dice(6)} ratas (nivel 1), sin tesoro. cada personaje herido por una rata tiene una probabilidad de 1 en 6 de sufrir una herida adicional por infeccion`, img: 'enemies/rat.webp', canWaitReaction, reaction};
         case 2:
             switch(reactRoll) {
                 case reactRoll <= 3:
@@ -292,7 +291,7 @@ const verminTable1 = (isWandering = false) => {
             }
             return {log: `${dice(6) + dice(6) + dice(6)} murcielagos vampiro (nivel 1), sin tesoro. Los hechizos se lanzan a -1 debido a
             sus gritos que distraen. A pesar del apodo de Vampiro, estos son
-            NO criaturas no muertas`, img: '', canWaitReaction, reaction};
+            NO criaturas no muertas`, img: 'enemies/vampire-bats.jepg', canWaitReaction, reaction};
         case 3:
             const goblins = dice(6) + dice(6);
             switch(reactRoll) {
@@ -310,7 +309,7 @@ const verminTable1 = (isWandering = false) => {
                     break
                 default:
             }
-            return {log: `Enjambre de goblins ${goblins} (nivel 3), moral - 1. Los enanos atacan + 1. Tesoro si se los derrota: ${treasureTable1(-1).log}`, img: '', canWaitReaction, reaction};
+            return {log: `Enjambre de goblins ${goblins} (nivel 3), moral - 1. Los enanos atacan + 1. Tesoro si se los derrota: ${treasureTable1(-1).log}`, img: 'enemies/goblins-swarm.jpg', canWaitReaction, reaction};
         case 4:
             switch(reactRoll) {
                 case 1:
@@ -326,7 +325,7 @@ const verminTable1 = (isWandering = false) => {
             }
             return {log: `${dice(6)} ciempiés gigantes, nivel 3, sin tesoro. Cualquier personaje herido
             por un ciempiés gigante debe salvar contra veneno de nivel 2 o perder 1
-            vida adicional`, img: '', canWaitReaction, reaction};
+            vida adicional`, img: 'enemies/giant-centipede.jpg', canWaitReaction, reaction};
         case 5:
             switch(reactRoll) {
                 case 1:
@@ -483,15 +482,77 @@ const weirdMonsterTable1 = (isWandering = false) => {
     const canWaitReaction = isWandering ? false : true;
     let reaction;
     switch(roll) {
-        case 1: 
-            return {log: ``, img: '', canWaitReaction, reaction};
+        case 1:
+            switch(reactRoll) {
+                case reactRoll <= 2:
+                    reaction = `El minotauro pide 60 piezas de oro como soborno a cambio de dejarlos tranquilos`;
+                    break
+                case reactRoll >= 3:
+                    reaction = `Pelear`;
+                    break
+                case reactRoll >= 5:
+                    reaction = `Pelear a muerte`;
+                    break
+                default:
+            }  
+            return {log: `Minotauro (Nivel 5), 4 puntos de vida, 2 ataques. Debido a la
+            poder de su embestida, la primera tirada de Defensa contra un minotauro es
+            a -1. A los minotauros les encanta comerse medianos. Los medianos no pueden usar la Suerte en un
+            Encuentro con un Minotauro. Tesoro si se lo derrota: ${treasureTable1(0).log}`, img: '', canWaitReaction, reaction};
         case 2:
-            return {log: ``, img: '', canWaitReaction, reaction};
+            switch(reactRoll) {
+                case 1:
+                    reaction = `Escapar`;
+                    break
+                case reactRoll <= 3:
+                    reaction = `Puedes usar ${dice(6)} piezas de oro para distraer a la criatura, no cuenta el oro del bobo.`;
+                    break
+                case reactRoll >= 4:
+                    reaction = `Pelear`;
+                    break
+                default:
+            }  
+            return {log: `Devorador de hierro (Nivel 3), 4 vidas, 3 ataques, sin tesoro. Tiradas de defensa contra
+            El devorador de hierro no suman bonificación por armadura pesada (ligera y escudo si).
+            . Si el monstruo golpea, el personaje no sufre daño pero
+            pierde su armadura, escudo, arma principal o 3d6 de oro, en este orden.`, img: '', canWaitReaction, reaction};
         case 3:
-            return {log: ``, img: '', canWaitReaction, reaction};
+            switch(reactRoll) {
+                case 1:
+                    reaction = `La quimera pide 50 piezas de oro como soborno a cambio de dejarlos tranquilos`;
+                    break
+                case reactRoll >= 2:
+                    reaction = `Pelear`;
+                    break
+                default:
+            }  
+            return {log: `Quimera (Nivel 5), 6 puntos de vida, 3 ataques. En cada turno de la Quimera tira 1d6. 
+            Con un 1 o 2 la quimera escupe fuego
+            en lugar de realizar múltiples ataques. Todos los personajes deben tirar versus fuego
+            nivel 4 o perder 1 vida. Tesoro si se lo derrota: ${treasureTable1(0).log}`, img: '', canWaitReaction, reaction};
         case 4:
-            return {log: ``, img: '', canWaitReaction, reaction};
+            switch(reactRoll) {
+                case 1:
+                    reaction = `Escapar`;
+                    break
+                case reactRoll >= 2:
+                    reaction = `Pelear`;
+                    break
+                default:
+            }  
+            return {log: `Catoblepas (Nivel 4), 4 puntos de vida. Todos los personajes 
+            al comienzo de la batalla debes salvar contra un ataque de mirada de nivel 4 o perder 1
+            vida. Tesoro si se lo derrota: ${treasureTable1(1).log}`, img: '', canWaitReaction, reaction};
         case 5:
+            switch(reactRoll) {
+                case 1:
+                    reaction = `Escapar`;
+                    break
+                case reactRoll >= 2:
+                    reaction = `Pelear`;
+                    break
+                default:
+            }  
             return {log: ``, img: '', canWaitReaction, reaction};
         case 6:
             return {log: ``, img: '', canWaitReaction, reaction};
